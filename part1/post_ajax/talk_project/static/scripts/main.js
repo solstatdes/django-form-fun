@@ -19,8 +19,7 @@ $(function() {
             success : function(json) {
                 $('#post-text').val(''); // remove the value from the input
                 console.log(json); // log the returned json to the console
-                $("#talk").prepend("<li><strong>"+json.text+"</strong> - <em> "+json.author+"</em> - <span> "+json.created+
-                    "</span> - <a id='delete-post-"+json.postpk+"'>delete me</a></li>");
+                $("#talk").prepend("<li><strong>"+json.text+"</strong> - <em> "+json.author+"</em> - <span> "+json.created+"</span> - <a class='delete' id='delete-post-"+json.postpk+"'>delete me</a></li>");
                 console.log("success"); // another sanity check
             },
             // handle a non-successful response
@@ -31,6 +30,33 @@ $(function() {
             }
         });
     };
+
+    // Delete listener
+    $('body').on("click", ".delete", function() {
+        var id = $(this).attr('id');
+        var suffix = id.match(/\d+/)[0];
+        console.log('delete message '+suffix); //sanity check
+        delete_post(id, suffix);
+    });
+
+    // Delete AJAX
+    function delete_post(id, suffix) {
+        console.log("I'm going to delete post "+id);
+        $.ajax({
+            url: "delete_post/", //endpoint
+            type: "POST", //http method
+            data: { post : suffix },
+            success: function(json) {
+                console.log(json);
+                $('#'+id).parent().remove();
+            },
+            error: function(xhr, errmsg,err) {
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    };
+
+
 
 
     // This function gets cookie with a given name
