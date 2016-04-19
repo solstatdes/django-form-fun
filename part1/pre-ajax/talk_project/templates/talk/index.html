@@ -9,9 +9,9 @@
 </div>
 <div class="row white">
     <div class="columns large-12">
-        <form action="/create_post/" method="POST">
+        <form action="/create_post/" method="POST" id="post-form">
             {% csrf_token %}
-            <div class="fieldWrapper">
+            <div class="fieldWrapper" id="the_post">
                 {{ form.text }}
             </div>
             <input type="submit" value="Post" class="tiny button">
@@ -22,7 +22,7 @@
 <!-- The feed -->
 <div class="row white">
     <div class="columns large-12">
-        <ul>
+        <ul id="talk">
             {% for post in all_posts %}
                 <li>
                     <strong>{{ post.text }}</strong> -
@@ -33,5 +33,7 @@
         </ul>
     </div>
 </div>
+
+<script src="static/scripts/main.js"></script>
 
 {% endblock %}
